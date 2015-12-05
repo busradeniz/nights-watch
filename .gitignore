@@ -22,11 +22,12 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-### Example user template template
-### Example user template
 
 # IntelliJ project files
 .idea
 *.iml
 out
 gen
+
+###Test Resulted files
+nights-watch-web/src/main/webapp/public/image/*.jpg

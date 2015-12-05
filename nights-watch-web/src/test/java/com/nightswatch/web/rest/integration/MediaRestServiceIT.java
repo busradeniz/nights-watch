@@ -1,7 +1,7 @@
 package com.nightswatch.web.rest.integration;
 
 import com.nightswatch.api.dto.MediaDto;
-import com.nightswatch.api.dto.SignInRequestDto;
+import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;

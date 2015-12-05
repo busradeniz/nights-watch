@@ -1,7 +1,7 @@
 package com.nightswatch.api.dto.user;
 
 
-public class AuthenticationDto {
+public class SignInRequestDto {
 
     private String username;
     private String password;

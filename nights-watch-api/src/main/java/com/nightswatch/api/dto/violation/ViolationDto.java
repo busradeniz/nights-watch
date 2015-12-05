@@ -1,5 +1,9 @@
-package com.nightswatch.api.dto;
+package com.nightswatch.api.dto.violation;
 
+import com.nightswatch.api.dto.EntityDto;
+import com.nightswatch.api.dto.MediaDto;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -12,11 +16,14 @@ public class ViolationDto implements EntityDto {
     private Double latitude;
     private Double longitude;
     private String address;
-    //    private ViolationStatusTypeDto violationStatusTypeDto;
-//    private DangerLevelTypeDto dangerLevelTypeDto;
-//    private FrequencyLevelTypeDto frequencyLevelTypeDto;
+    private ViolationStatusTypeDto violationStatus;
+    private DangerLevelTypeDto dangerLevel;
+    private FrequencyLevelTypeDto frequencyLevel;
     private String violationGroupName;
     private Collection<String> tags;
+    private Collection<MediaDto> medias;
+    private Collection<String> userLikes;
+    private Long comments;
 
     @Override
     public Long getId() {
@@ -84,10 +91,67 @@ public class ViolationDto implements EntityDto {
     }
 
     public Collection<String> getTags() {
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
         return tags;
     }
 
     public void setTags(Collection<String> tags) {
         this.tags = tags;
+    }
+
+    public ViolationStatusTypeDto getViolationStatus() {
+        return violationStatus;
+    }
+
+    public void setViolationStatus(ViolationStatusTypeDto violationStatus) {
+        this.violationStatus = violationStatus;
+    }
+
+    public DangerLevelTypeDto getDangerLevel() {
+        return dangerLevel;
+    }
+
+    public void setDangerLevel(DangerLevelTypeDto dangerLevel) {
+        this.dangerLevel = dangerLevel;
+    }
+
+    public FrequencyLevelTypeDto getFrequencyLevel() {
+        return frequencyLevel;
+    }
+
+    public void setFrequencyLevel(FrequencyLevelTypeDto frequencyLevel) {
+        this.frequencyLevel = frequencyLevel;
+    }
+
+    public Collection<MediaDto> getMedias() {
+        if (medias == null) {
+            medias = new ArrayList<>();
+        }
+        return medias;
+    }
+
+    public void setMedias(Collection<MediaDto> medias) {
+        this.medias = medias;
+    }
+
+    public Collection<String> getUserLikes() {
+        if (userLikes == null) {
+            userLikes = new ArrayList<>();
+        }
+        return userLikes;
+    }
+
+    public void setUserLikes(Collection<String> userLikes) {
+        this.userLikes = userLikes;
+    }
+
+    public Long getComments() {
+        return comments;
+    }
+
+    public void setComments(Long comments) {
+        this.comments = comments;
     }
 }
