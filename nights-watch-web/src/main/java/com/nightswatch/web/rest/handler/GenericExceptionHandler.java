@@ -30,7 +30,7 @@ public class GenericExceptionHandler extends AbstractExceptionHandler {
     public ErrorDto onException(HttpServletRequest request, Exception e) {
 
         log.error("Exception occured {}:{}", e.getClass().getCanonicalName(), e.getMessage());
-        log.debug(e.getMessage(), e);
+        log.error(e.getMessage(), e);
 
         final ErrorDto errorDto = new ErrorDto();
         errorDto.setCause(e.getClass().getCanonicalName());

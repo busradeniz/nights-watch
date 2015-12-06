@@ -6,17 +6,17 @@ import java.util.Collection;
 
 public class CreateViolationRequestDto extends AbstractViolationDto implements Serializable {
 
-    private Collection<Long> tags;
+    private Collection<String> tags;
     private Collection<Long> medias;
 
-    public Collection<Long> getTags() {
+    public Collection<String> getTags() {
         if (tags == null) {
             this.tags = new ArrayList<>();
         }
         return tags;
     }
 
-    public void setTags(Collection<Long> tags) {
+    public void setTags(Collection<String> tags) {
         this.tags = tags;
     }
 

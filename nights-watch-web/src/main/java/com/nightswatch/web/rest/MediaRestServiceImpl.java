@@ -49,7 +49,7 @@ public class MediaRestServiceImpl extends AbstractAuthenticatedRestService imple
         this.checkAuthorizationToken(token);
         final Media media = this.mediaService.findOne(id);
         log.debug("Media({}) is found for given id({}).", media, id);
-        return MediaDtoConversionUtils.convertToDTO(media);
+        return MediaDtoConversionUtils.convert(media);
     }
 
     /**
@@ -69,7 +69,7 @@ public class MediaRestServiceImpl extends AbstractAuthenticatedRestService imple
             log.debug("Uploaded file is going to ve saved '{}'", fullPath);
             final Media newMedia = this.mediaService.createNewMedia(file.getBytes(), mediaType, fullPath, file.getOriginalFilename());
             log.debug("Upload is completed and a new media entity is created. Entity: {}", newMedia);
-            return MediaDtoConversionUtils.convertToDTO(newMedia);
+            return MediaDtoConversionUtils.convert(newMedia);
         } catch (IOException e) {
             log.error("Error while creating a new media.", e);
             throw new MediaIOException(file.getName(), e);

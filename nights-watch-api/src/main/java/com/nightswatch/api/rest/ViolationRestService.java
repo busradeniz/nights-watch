@@ -1,27 +1,24 @@
 package com.nightswatch.api.rest;
 
-import com.nightswatch.api.dto.violation.CreateViolationRequestDto;
-import com.nightswatch.api.dto.violation.ViolationDto;
-
 public interface ViolationRestService {
 
-    ViolationDto get(final Long id);
+//    ViolationDto get(final Long id, final String token);
 
-    ViolationDto create(final CreateViolationRequestDto createViolationRequestDto, final String token);
+//    ViolationDto create(final CreateViolationRequestDto createViolationRequestDto, final String token);
 
 
     // Create --> CreateViolationRequestDto
     // Update --> UpdateViolationRequestDto
     // Read ve Listeleme islemi GET
     // /1 DELETE
-    // /1/addMedia
-    // /1/removeMedia
-    // /1/addTags
-    // /1/removeTags
-    // /1/addUserLike
-    // /1/removeUserLike
-    // /1/addComment
-    // /1/removeComment
-    // /1/comments
-    // /1/userLikes
+    // /1/addMedia POST
+    // /1/removeMedia POST
+    // /1/addTags POST
+    // /1/removeTags POST
+    // /1/addUserLike POST
+    // /1/removeUserLike POST
+    // /1/addComment POST
+    // /1/removeComment POST
+    // /1/comments GET
+    // /1/userLikes GET
 }
