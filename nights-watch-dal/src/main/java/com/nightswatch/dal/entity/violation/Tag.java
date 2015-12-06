@@ -3,7 +3,6 @@ package com.nightswatch.dal.entity.violation;
 import com.nightswatch.dal.entity.AbstractEntity;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 
 @Entity
 @Table(name = "TAG")
@@ -12,4 +11,12 @@ public class Tag extends AbstractEntity {
 
     @Column(name = "NAME", unique = true, length = 30)
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

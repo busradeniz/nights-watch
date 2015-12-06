@@ -20,4 +20,8 @@ public interface ViolationRestService {
     // /1/removeTags
     // /1/addUserLike
     // /1/removeUserLike
+    // /1/addComment
+    // /1/removeComment
+    // /1/comments
+    // /1/userLikes
 }
