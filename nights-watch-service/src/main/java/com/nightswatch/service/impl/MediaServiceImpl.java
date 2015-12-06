@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -44,5 +46,14 @@ public class MediaServiceImpl extends AbstractService<Media, MediaRepository> im
             log.error("Error while creating media.", e);
             throw new MediaIOException(fileName, e);
         }
+    }
+
+    @Override
+    public Collection<Media> findAllByIds(final Collection<Long> ids) {
+        final Collection<Media> medias = new ArrayList<>();
+        for (Long id : ids) {
+            medias.add(this.findOne(id));
+        }
+        return medias;
     }
 }

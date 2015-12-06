@@ -1,6 +1,6 @@
 package com.nightswatch.web.rest.integration;
 
-import com.nightswatch.api.dto.SignInRequestDto;
+import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
 import com.nightswatch.api.dto.user.UserDto;
 import org.junit.Assert;

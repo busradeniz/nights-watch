@@ -1,7 +1,7 @@
 package com.nightswatch.web.rest.integration;
 
 import com.nightswatch.api.dto.ResponseType;
-import com.nightswatch.api.dto.SignInRequestDto;
+import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.ResetPasswordRequestDto;
 import com.nightswatch.api.dto.user.ResetPasswordResponseDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
