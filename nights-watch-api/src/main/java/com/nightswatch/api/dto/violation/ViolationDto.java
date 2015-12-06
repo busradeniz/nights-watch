@@ -7,19 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class ViolationDto implements EntityDto {
+/**
+ * DTO object for Reading and Listing operations.
+ */
+public class ViolationDto extends AbstractViolationDto implements EntityDto {
 
     private Long id;
-    private String title;
     private Date violationDate;
-    private String description;
-    private Double latitude;
-    private Double longitude;
-    private String address;
-    private ViolationStatusTypeDto violationStatus;
-    private DangerLevelTypeDto dangerLevel;
-    private FrequencyLevelTypeDto frequencyLevel;
-    private String violationGroupName;
     private Collection<String> tags;
     private Collection<MediaDto> medias;
     private Collection<String> userLikes;
@@ -34,60 +28,12 @@ public class ViolationDto implements EntityDto {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Date getViolationDate() {
         return violationDate;
     }
 
     public void setViolationDate(Date violationDate) {
         this.violationDate = violationDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getViolationGroupName() {
-        return violationGroupName;
-    }
-
-    public void setViolationGroupName(String violationGroupName) {
-        this.violationGroupName = violationGroupName;
     }
 
     public Collection<String> getTags() {
@@ -99,30 +45,6 @@ public class ViolationDto implements EntityDto {
 
     public void setTags(Collection<String> tags) {
         this.tags = tags;
-    }
-
-    public ViolationStatusTypeDto getViolationStatus() {
-        return violationStatus;
-    }
-
-    public void setViolationStatus(ViolationStatusTypeDto violationStatus) {
-        this.violationStatus = violationStatus;
-    }
-
-    public DangerLevelTypeDto getDangerLevel() {
-        return dangerLevel;
-    }
-
-    public void setDangerLevel(DangerLevelTypeDto dangerLevel) {
-        this.dangerLevel = dangerLevel;
-    }
-
-    public FrequencyLevelTypeDto getFrequencyLevel() {
-        return frequencyLevel;
-    }
-
-    public void setFrequencyLevel(FrequencyLevelTypeDto frequencyLevel) {
-        this.frequencyLevel = frequencyLevel;
     }
 
     public Collection<MediaDto> getMedias() {

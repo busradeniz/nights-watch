@@ -1,6 +1,15 @@
 package com.nightswatch.api.rest;
 
-import com.nightswatch.api.dto.violation.ViolationDto;
+public interface ViolationRestService {
 
-public interface ViolationRestService extends CrudRestService<ViolationDto>{
+    // Create --> CreateViolationRequestDto
+    // Update --> UpdateViolationRequestDto
+    // Read ve Listeleme islemi GET
+    // /1 DELETE
+    // /1/addMedia
+    // /1/removeMedia
+    // /1/addTags
+    // /1/removeTags
+    // /1/addUserLike
+    // /1/removeUserLike
 }
