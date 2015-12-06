@@ -26,4 +26,20 @@ public class TagRepositoryTest extends AbstractRepositoryTest {
         assertNotNull(dbTag);
         assertEquals(tag, dbTag);
     }
+
+    @Test
+    public void testFindByName() throws Exception {
+        Tag tag = new Tag();
+        tag.setName("TEST_TAG_1");
+        tag = tagRepository.save(tag);
+        assertNotNull(tag);
+        assertNotNull(tag.getId());
+
+
+        final Tag dbTag = tagRepository.findByName("TEST_TAG_1");
+        assertNotNull(dbTag);
+        assertEquals(tag, dbTag);
+    }
+
+
 }
