@@ -18,6 +18,24 @@ public abstract class AbstractViolationDto implements Serializable {
     protected FrequencyLevelTypeDto frequencyLevel;
     protected String violationGroupName;
 
+
+    // Default Const.
+    public AbstractViolationDto() {
+    }
+
+    // Copy Const.
+    public AbstractViolationDto(AbstractViolationDto other) {
+        this.title = other.title;
+        this.description = other.description;
+        this.latitude = other.latitude;
+        this.longitude = other.longitude;
+        this.address = other.address;
+        this.violationStatus = other.violationStatus;
+        this.dangerLevel = other.dangerLevel;
+        this.frequencyLevel = other.frequencyLevel;
+        this.violationGroupName = other.violationGroupName;
+    }
+
     public String getTitle() {
         return title;
     }
