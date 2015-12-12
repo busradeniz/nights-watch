@@ -17,8 +17,9 @@ public interface ViolationRestService {
     // /1/removeTags POST +
     // /1/addUserLike POST
     // /1/removeUserLike POST
-    // /1/addComment POST
-    // /1/removeComment POST
-    // /1/comments GET
     // /1/userLikes GET
+
+    // /1/addComment POST +
+    // /1/removeComment POST +
+    // /1/comments GET +
 }

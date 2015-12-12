@@ -71,10 +71,10 @@ public class Violation extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "TAG_ID")})
     private Collection<Tag> tags;
 
-    @OneToOne(targetEntity = UserLike.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true, mappedBy = "violation")
+    @OneToMany(targetEntity = UserLike.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
     private Collection<UserLike> userLikes;
 
-    @OneToOne(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true, mappedBy = "violation")
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
     private Collection<Comment> comments;
 
     public String getTitle() {

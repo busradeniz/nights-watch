@@ -2,19 +2,23 @@ package com.nightswatch.web.rest;
 
 import com.nightswatch.api.dto.MediaDto;
 import com.nightswatch.api.dto.TagDto;
+import com.nightswatch.api.dto.violation.CommentDto;
 import com.nightswatch.api.dto.violation.CreateViolationRequestDto;
 import com.nightswatch.api.dto.violation.UpdateViolationRequestDto;
 import com.nightswatch.api.dto.violation.ViolationDto;
 import com.nightswatch.api.rest.ViolationRestService;
 import com.nightswatch.dal.entity.Media;
 import com.nightswatch.dal.entity.user.User;
+import com.nightswatch.dal.entity.violation.Comment;
 import com.nightswatch.dal.entity.violation.Tag;
 import com.nightswatch.dal.entity.violation.Violation;
 import com.nightswatch.service.MediaService;
 import com.nightswatch.service.user.UserTokenService;
+import com.nightswatch.service.violation.CommentService;
 import com.nightswatch.service.violation.TagService;
 import com.nightswatch.service.violation.ViolationGroupService;
 import com.nightswatch.service.violation.ViolationService;
+import com.nightswatch.web.util.CommentDtoConversionUtils;
 import com.nightswatch.web.util.EnumDtoConversionUtils;
 import com.nightswatch.web.util.ViolationDtoConversionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/violation")
@@ -33,18 +40,21 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     private final TagService tagService;
     private final ViolationGroupService violationGroupService;
     private final MediaService mediaService;
+    private final CommentService commentService;
 
     @Autowired
     public ViolationRestServiceImpl(final UserTokenService userTokenService,
                                     final ViolationService violationService,
                                     final TagService tagService,
                                     final ViolationGroupService violationGroupService,
-                                    final MediaService mediaService) {
+                                    final MediaService mediaService,
+                                    final CommentService commentService) {
         super(userTokenService);
         this.violationService = violationService;
         this.tagService = tagService;
         this.violationGroupService = violationGroupService;
         this.mediaService = mediaService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -135,5 +145,18 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         violation.getTags().remove(tag);
         violationService.save(violation);
         return ViolationDtoConversionUtils.convert(violation);
+    }
+
+    @RequestMapping(path = "/{id}/comments", method = RequestMethod.GET)
+    public Collection<CommentDto> comments(@PathVariable Long id,
+                                           @RequestHeader(name = "Authorization", required = false) final String token) {
+        this.checkAuthorizationToken(token);
+        final List<Comment> comments = commentService.findByViolationId(id);
+        final Collection<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentDtos.add(CommentDtoConversionUtils.convert(comment));
+        }
+
+        return commentDtos;
     }
 }
