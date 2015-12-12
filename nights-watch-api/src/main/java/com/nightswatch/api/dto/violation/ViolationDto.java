@@ -20,6 +20,7 @@ public class ViolationDto extends AbstractViolationDto implements EntityDto {
     private Collection<String> userLikes;
     private Integer commentCount;
     private Integer userLikeCount;
+    private Integer userWatchCount;
 
     @Override
     public Long getId() {
@@ -95,6 +96,14 @@ public class ViolationDto extends AbstractViolationDto implements EntityDto {
         this.userLikeCount = userLikeCount;
     }
 
+    public Integer getUserWatchCount() {
+        return userWatchCount;
+    }
+
+    public void setUserWatchCount(Integer userWatchCount) {
+        this.userWatchCount = userWatchCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,7 +119,9 @@ public class ViolationDto extends AbstractViolationDto implements EntityDto {
         if (medias != null ? !medias.equals(that.medias) : that.medias != null) return false;
         if (userLikes != null ? !userLikes.equals(that.userLikes) : that.userLikes != null) return false;
         if (commentCount != null ? !commentCount.equals(that.commentCount) : that.commentCount != null) return false;
-        return !(userLikeCount != null ? !userLikeCount.equals(that.userLikeCount) : that.userLikeCount != null);
+        if (userLikeCount != null ? !userLikeCount.equals(that.userLikeCount) : that.userLikeCount != null)
+            return false;
+        return !(userWatchCount != null ? !userWatchCount.equals(that.userWatchCount) : that.userWatchCount != null);
 
     }
 
@@ -124,6 +135,7 @@ public class ViolationDto extends AbstractViolationDto implements EntityDto {
         result = 31 * result + (userLikes != null ? userLikes.hashCode() : 0);
         result = 31 * result + (commentCount != null ? commentCount.hashCode() : 0);
         result = 31 * result + (userLikeCount != null ? userLikeCount.hashCode() : 0);
+        result = 31 * result + (userWatchCount != null ? userWatchCount.hashCode() : 0);
         return result;
     }
 }

@@ -74,6 +74,9 @@ public class Violation extends AbstractEntity {
     @OneToMany(targetEntity = UserLike.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
     private Collection<UserLike> userLikes;
 
+    @OneToMany(targetEntity = UserWatch.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
+    private Collection<UserWatch> userWatches;
+
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
     private Collection<Comment> comments;
 
@@ -203,6 +206,14 @@ public class Violation extends AbstractEntity {
 
     public void setUserLikes(Collection<UserLike> userLikes) {
         this.userLikes = userLikes;
+    }
+
+    public Collection<UserWatch> getUserWatches() {
+        return userWatches;
+    }
+
+    public void setUserWatches(Collection<UserWatch> userWatches) {
+        this.userWatches = userWatches;
     }
 
     public Collection<Comment> getComments() {

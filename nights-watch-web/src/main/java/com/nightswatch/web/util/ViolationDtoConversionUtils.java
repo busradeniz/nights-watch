@@ -51,6 +51,7 @@ public final class ViolationDtoConversionUtils {
         violationDto.setTags(TagDtoConversionUtils.convert(violation.getTags()));
         violationDto.setCommentCount(violation.getComments() == null ? 0 : violation.getComments().size());
         violationDto.setUserLikeCount(violation.getUserLikes() == null ? 0 : violation.getUserLikes().size());
+        violationDto.setUserWatchCount(violation.getUserWatches() == null ? 0 : violation.getUserWatches().size());
         return violationDto;
     }
 }

@@ -2,25 +2,15 @@ package com.nightswatch.web.rest;
 
 import com.nightswatch.api.dto.MediaDto;
 import com.nightswatch.api.dto.TagDto;
-import com.nightswatch.api.dto.violation.CommentDto;
-import com.nightswatch.api.dto.violation.CreateViolationRequestDto;
-import com.nightswatch.api.dto.violation.UpdateViolationRequestDto;
-import com.nightswatch.api.dto.violation.ViolationDto;
+import com.nightswatch.api.dto.violation.*;
 import com.nightswatch.api.rest.ViolationRestService;
 import com.nightswatch.dal.entity.Media;
 import com.nightswatch.dal.entity.user.User;
-import com.nightswatch.dal.entity.violation.Comment;
-import com.nightswatch.dal.entity.violation.Tag;
-import com.nightswatch.dal.entity.violation.Violation;
+import com.nightswatch.dal.entity.violation.*;
 import com.nightswatch.service.MediaService;
 import com.nightswatch.service.user.UserTokenService;
-import com.nightswatch.service.violation.CommentService;
-import com.nightswatch.service.violation.TagService;
-import com.nightswatch.service.violation.ViolationGroupService;
-import com.nightswatch.service.violation.ViolationService;
-import com.nightswatch.web.util.CommentDtoConversionUtils;
-import com.nightswatch.web.util.EnumDtoConversionUtils;
-import com.nightswatch.web.util.ViolationDtoConversionUtils;
+import com.nightswatch.service.violation.*;
+import com.nightswatch.web.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,20 +31,27 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     private final ViolationGroupService violationGroupService;
     private final MediaService mediaService;
     private final CommentService commentService;
+    private final UserLikeService userLikeService;
+    private final UserWatchService userWatchService;
 
+    // TODO Refactor -- Too many parameters
     @Autowired
     public ViolationRestServiceImpl(final UserTokenService userTokenService,
                                     final ViolationService violationService,
                                     final TagService tagService,
                                     final ViolationGroupService violationGroupService,
                                     final MediaService mediaService,
-                                    final CommentService commentService) {
+                                    final CommentService commentService,
+                                    final UserLikeService userLikeService,
+                                    final UserWatchService userWatchService) {
         super(userTokenService);
         this.violationService = violationService;
         this.tagService = tagService;
         this.violationGroupService = violationGroupService;
         this.mediaService = mediaService;
         this.commentService = commentService;
+        this.userLikeService = userLikeService;
+        this.userWatchService = userWatchService;
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -158,5 +155,29 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         }
 
         return commentDtos;
+    }
+
+    @RequestMapping(path = "/{id}/userLikes", method = RequestMethod.GET)
+    public Collection<UserLikeDto> userLikes(@PathVariable Long id,
+                                             @RequestHeader(name = "Authorization", required = false) final String token) {
+        this.checkAuthorizationToken(token);
+        final List<UserLike> userLikes = this.userLikeService.findByViolationId(id);
+        final Collection<UserLikeDto> userLikeDtos = new ArrayList<>();
+        for (UserLike userLike : userLikes) {
+            userLikeDtos.add(UserLikeDtoConversionUtils.convert(userLike));
+        }
+        return userLikeDtos;
+    }
+
+    @RequestMapping(path = "/{id}/userWatches", method = RequestMethod.GET)
+    public Collection<UserWatchDto> userWatches(@PathVariable Long id,
+                                                @RequestHeader(name = "Authorization", required = false) final String token) {
+        this.checkAuthorizationToken(token);
+        final List<UserWatch> userWatches = this.userWatchService.findByViolationId(id);
+        final Collection<UserWatchDto> userWatchDtos = new ArrayList<>();
+        for (UserWatch userWatch : userWatches) {
+            userWatchDtos.add(UserWatchDtoConversionUtils.convert(userWatch));
+        }
+        return userWatchDtos;
     }
 }
