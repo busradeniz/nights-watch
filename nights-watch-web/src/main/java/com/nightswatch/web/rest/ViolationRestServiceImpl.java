@@ -54,6 +54,19 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         this.userWatchService = userWatchService;
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public Collection<ViolationDto> getAll(@RequestParam("longitude") Double longitude,
+                                           @RequestParam("latitude") Double latitude,
+                                           @RequestHeader(name = "Authorization", required = false) final String token) {
+        this.checkAuthorizationToken(token);
+        final List<Violation> violations = this.violationService.findAll();
+        final Collection<ViolationDto> violationDtos = new ArrayList<>();
+        for (Violation violation : violations) {
+            violationDtos.add(ViolationDtoConversionUtils.convert(violation));
+        }
+        return violationDtos;
+    }
+
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public ViolationDto get(@PathVariable Long id,
                             @RequestHeader(name = "Authorization", required = false) final String token) {
