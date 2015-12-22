@@ -4,7 +4,6 @@ import com.nightswatch.dal.entity.AbstractEntity;
 import com.nightswatch.dal.entity.user.User;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
@@ -23,4 +22,28 @@ public class UserLike extends AbstractEntity {
     @Column(name = "LIKE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date likeDate;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Violation getViolation() {
+        return violation;
+    }
+
+    public void setViolation(Violation violation) {
+        this.violation = violation;
+    }
+
+    public Date getLikeDate() {
+        return likeDate;
+    }
+
+    public void setLikeDate(Date likeDate) {
+        this.likeDate = likeDate;
+    }
 }

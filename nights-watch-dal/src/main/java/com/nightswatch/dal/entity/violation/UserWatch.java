@@ -17,4 +17,20 @@ public class UserWatch extends AbstractEntity {
     @ManyToOne(targetEntity = Violation.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "VIOLATION_ID")
     private Violation violation;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Violation getViolation() {
+        return violation;
+    }
+
+    public void setViolation(Violation violation) {
+        this.violation = violation;
+    }
 }
