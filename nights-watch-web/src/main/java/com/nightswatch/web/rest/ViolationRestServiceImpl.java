@@ -70,7 +70,7 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     @RequestMapping(path = "/top20/mostLiked", method = RequestMethod.GET)
     public Collection<ViolationDto> getMostLikedViolations(@RequestHeader(name = "Authorization", required = false) final String token) {
         this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAll();
+        final List<Violation> violations = this.violationService.findAllWithMostLikes();
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));
@@ -81,7 +81,7 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     @RequestMapping(path = "/top20/newest", method = RequestMethod.GET)
     public Collection<ViolationDto> getNewestViolations(@RequestHeader(name = "Authorization", required = false) final String token) {
         this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAll();
+        final List<Violation> violations = this.violationService.findAllNewest();
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));
@@ -92,8 +92,8 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     @RequestMapping(path = "/top20/owned", method = RequestMethod.GET)
     public Collection<ViolationDto> getOwnedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto violationStatusTypeDto,
                                                        @RequestHeader(name = "Authorization", required = false) final String token) {
-        this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAll();
+        final User user = this.checkAuthorizationToken(token);
+        final List<Violation> violations = this.violationService.findAllByOwnerAndViolationStatusType(user, EnumDtoConversionUtils.convert(violationStatusTypeDto));
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));
@@ -104,8 +104,8 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     @RequestMapping(path = "/top20/watched", method = RequestMethod.GET)
     public Collection<ViolationDto> getWatchedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto violationStatusTypeDto,
                                                          @RequestHeader(name = "Authorization", required = false) final String token) {
-        this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAll();
+        final User user = this.checkAuthorizationToken(token);
+        final List<Violation> violations = this.violationService.findAllWatchedViolations(user, EnumDtoConversionUtils.convert(violationStatusTypeDto));
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));

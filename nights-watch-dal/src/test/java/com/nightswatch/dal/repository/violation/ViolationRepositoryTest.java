@@ -237,4 +237,44 @@ public class ViolationRepositoryTest extends AbstractRepositoryTest {
         assertFalse(allByOwnerAndViolationStatusType.isEmpty());
         assertEquals(violation2, allByOwnerAndViolationStatusType.get(0));
     }
+
+    @Test
+    public void testFindAllWithMostLikesButNoLikes() throws Exception {
+
+        final ViolationGroup violationGroup = new ViolationGroup();
+        violationGroup.setName("TEST_VIOLATION_GROUP_NAME_4");
+        violationGroupRepository.save(violationGroup);
+
+        final User user = new User();
+        user.setEmail("test4.1@gmail.com");
+        user.setPassword("1q2w3e");
+        user.setUsername("test4.1");
+        final Role role = new Role();
+        role.setRoleName("TEST_ROLE_4.1");
+        user.setRoles(Collections.singletonList(role));
+        userRepository.save(user);
+
+        Violation violation1 = new Violation();
+        violation1.setTitle("TEST_VIOLATION_4.1");
+        violation1.setFrequencyLevelType(FrequencyLevelType.HIGH);
+        violation1.setDangerLevelType(DangerLevelType.HIGH);
+        violation1.setViolationStatusType(ViolationStatusType.NOT_VIOLATION);
+        violation1.setAddress("TEST_ADDRESS");
+        violation1.setDescription("TEST_DESCRIPTION");
+        violation1.setLastModifiedBy("LAST_MODIFIED_USER");
+        violation1.setLastModifiedDate(new Date());
+        violation1.setLatitude(0d);
+        violation1.setLongitude(0d);
+        violation1.setViolationDate(new Date());
+        violation1.setOwner(user);
+        violation1.setViolationGroup(violationGroup);
+        violation1 = violationRepository.save(violation1);
+        assertNotNull(violation1);
+        assertNotNull(violation1.getId());
+
+        final List<Violation> allByOwnerAndViolationStatusType = violationRepository.findAllWithMostLikes();
+        assertNotNull(allByOwnerAndViolationStatusType);
+        assertFalse(allByOwnerAndViolationStatusType.isEmpty());
+        assertEquals(violation1, allByOwnerAndViolationStatusType.get(0));
+    }
 }
