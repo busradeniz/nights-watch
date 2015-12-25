@@ -4,6 +4,7 @@ import com.nightswatch.dal.entity.user.User;
 import com.nightswatch.dal.entity.user.UserStatusType;
 import com.nightswatch.dal.repository.user.UserRepository;
 import com.nightswatch.service.AbstractService;
+import com.nightswatch.service.MailingService;
 import com.nightswatch.service.exception.AuthenticationFailedException;
 import com.nightswatch.service.exception.DataNotFoundException;
 import com.nightswatch.service.user.RoleService;
@@ -27,14 +28,17 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
 
     private final RoleService roleService;
     private final UserTokenService userTokenService;
+    private final MailingService mailingService;
 
     @Autowired
     public UserServiceImpl(UserRepository repository,
                            RoleService roleService,
-                           UserTokenService userTokenService) {
+                           UserTokenService userTokenService,
+                           MailingService mailingService) {
         super(repository);
         this.roleService = roleService;
         this.userTokenService = userTokenService;
+        this.mailingService = mailingService;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
 
         user.setPassword("NW+" + new Random().nextInt(9999));
         this.repository.save(user);
-        // TODO Send an email to user. Email must contain new password.
+        this.mailingService.sendPasswordResetEmail(user);
     }
 
     @Override
@@ -74,10 +78,7 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
         user.setPassword(password);
         user.setEmail(email);
         user.setRoles(roleService.getBasicUserRoles());
-
-        // TODO Email gonderilecek ve kullanici email'e tikladiktan sonra aktif edilecek.
         user.setUserStatusType(UserStatusType.ACTIVE);
-        // user.setUserStatusType(UserStatusType.WAITING_CONFIRMATION);
 
         this.save(user);
         return user;

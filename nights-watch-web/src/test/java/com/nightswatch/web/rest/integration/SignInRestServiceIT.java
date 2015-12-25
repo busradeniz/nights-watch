@@ -1,11 +1,7 @@
 package com.nightswatch.web.rest.integration;
 
 import com.nightswatch.api.dto.ResponseType;
-import com.nightswatch.api.dto.user.SignInRequestDto;
-import com.nightswatch.api.dto.user.ResetPasswordRequestDto;
-import com.nightswatch.api.dto.user.ResetPasswordResponseDto;
-import com.nightswatch.api.dto.user.SignInResponseDto;
-import com.nightswatch.api.dto.user.UserDto;
+import com.nightswatch.api.dto.user.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -14,6 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class SignInRestServiceIT extends AbstractIT {
+
 
     @Test
     public void testAuthenticate() throws Exception {
@@ -49,7 +46,7 @@ public class SignInRestServiceIT extends AbstractIT {
     public void testResetPassword() throws Exception {
         final ResetPasswordRequestDto resetPasswordRequestDto = new ResetPasswordRequestDto();
         resetPasswordRequestDto.setUsername("test");
-        resetPasswordRequestDto.setEmail("test@gmail.com");
+        resetPasswordRequestDto.setEmail("busradeniz89@gmail.com");
 
         final ResetPasswordResponseDto resetPasswordResponseDto = getRestTemplate().postForObject(this.baseUrl + "/resetPassword", resetPasswordRequestDto, ResetPasswordResponseDto.class);
         Assert.assertNotNull(resetPasswordRequestDto);
