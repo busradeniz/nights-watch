@@ -151,8 +151,22 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         violation.setLastModifiedBy(user.getUsername());
         violation.setLastModifiedDate(new Date());
         violation.setViolationGroup(violationGroupService.findByName(updateViolationRequestDto.getViolationGroupName()));
+        final Comment historyComment = this.createHistoryComment(violation, user);
+        if (violation.getComments() == null) {
+            violation.setComments(new ArrayList<Comment>());
+        }
+        violation.getComments().add(historyComment);
         violation = violationService.save(violation);
         return ViolationDtoConversionUtils.convert(violation);
+    }
+
+    private Comment createHistoryComment(Violation violation, User user) {
+        final Comment comment = new Comment();
+        comment.setCommentType(CommentType.HISTORY);
+        comment.setViolation(violation);
+        comment.setOwner(user);
+        comment.setContent("User (" + user.getUsername() + ") updated violation.");
+        return this.commentService.save(comment);
     }
 
     @RequestMapping(path = "/{id}/addMedia", method = RequestMethod.POST)

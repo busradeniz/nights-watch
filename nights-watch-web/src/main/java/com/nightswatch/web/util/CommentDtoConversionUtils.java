@@ -15,6 +15,7 @@ public final class CommentDtoConversionUtils {
         commentDto.setUsername(comment.getOwner().getUsername());
         commentDto.setViolationId(comment.getViolation().getId());
         commentDto.setMediaDtos(MediaDtoConversionUtils.convert(comment.getMedias()));
+        commentDto.setCommentTypeDto(EnumDtoConversionUtils.convert(comment.getCommentType()));
         return commentDto;
     }
 }

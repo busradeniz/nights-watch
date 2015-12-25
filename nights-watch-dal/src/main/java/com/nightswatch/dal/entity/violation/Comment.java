@@ -5,7 +5,6 @@ import com.nightswatch.dal.entity.Media;
 import com.nightswatch.dal.entity.user.User;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.Collection;
 import java.util.Date;
 
@@ -36,8 +35,13 @@ public class Comment extends AbstractEntity {
     @JoinColumn(name = "VIOLATION_ID")
     private Violation violation;
 
+    @Column(name = "COMMENT_TYPE", length = 7)
+    @Enumerated(EnumType.STRING)
+    private CommentType commentType;
+
     public Comment() {
         this.commentDate = new Date();
+        this.commentType = CommentType.BASIC;
     }
 
     public User getOwner() {
@@ -78,5 +82,13 @@ public class Comment extends AbstractEntity {
 
     public void setViolation(Violation violation) {
         this.violation = violation;
+    }
+
+    public CommentType getCommentType() {
+        return commentType;
+    }
+
+    public void setCommentType(CommentType commentType) {
+        this.commentType = commentType;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
@@ -170,6 +169,8 @@ public class ViolationRestServiceIT extends AbstractIT {
         final ViolationDto afterUpdate = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/" + createdViolationDto.getId(), ViolationDto.class);
         assertNotNull(afterUpdate);
         assertEquals("Test Violation 2", afterUpdate.getTitle());
+        // History commenti atildigindan comment sayisinin bir artmasi gerekiyor
+        assertEquals(new Integer(afterCreated.getCommentCount() + 1), afterUpdate.getCommentCount());
 
         // 5. Adim: Yeni Bir Media'in yuklenmesi
         final LinkedMultiValueMap<String, Object> parameterMap = new LinkedMultiValueMap<>();

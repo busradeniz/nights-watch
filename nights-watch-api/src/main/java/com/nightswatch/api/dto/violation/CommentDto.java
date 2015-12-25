@@ -10,6 +10,7 @@ public class CommentDto extends AbstractCommentDto {
     private String username;
     private Collection<MediaDto> mediaDtos;
     private Long violationId;
+    private CommentTypeDto commentTypeDto;
 
     public Long getId() {
         return id;
@@ -41,6 +42,14 @@ public class CommentDto extends AbstractCommentDto {
 
     public void setViolationId(Long violationId) {
         this.violationId = violationId;
+    }
+
+    public CommentTypeDto getCommentTypeDto() {
+        return commentTypeDto;
+    }
+
+    public void setCommentTypeDto(CommentTypeDto commentTypeDto) {
+        this.commentTypeDto = commentTypeDto;
     }
 
     @Override
