@@ -1,11 +1,12 @@
 package com.nightswatch.web.rest;
 
 import com.nightswatch.api.dto.ResponseType;
-import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.ResetPasswordRequestDto;
 import com.nightswatch.api.dto.user.ResetPasswordResponseDto;
+import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
 import com.nightswatch.api.rest.user.SignInRestService;
+import com.nightswatch.dal.entity.user.UserToken;
 import com.nightswatch.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +31,12 @@ public class SignInRestServiceImpl implements SignInRestService {
     @Override
     public SignInResponseDto signIn(@RequestBody SignInRequestDto signInRequestDto) {
         log.debug("Trying to signIn for authenticationDto {}", signInRequestDto);
-        final String token = userService.signIn(signInRequestDto.getUsername(), signInRequestDto.getPassword());
-        log.debug("Token ({}) is created for signInRequestDto {}", token, signInRequestDto);
+        final UserToken userToken = userService.signIn(signInRequestDto.getUsername(), signInRequestDto.getPassword());
+        log.debug("Token ({}) is created for signInRequestDto {}", userToken, signInRequestDto);
         final SignInResponseDto signInResponseDto = new SignInResponseDto();
         signInResponseDto.setMessage("Giriş işlemi başarılı şekilde sonuçlandı.");
-        signInResponseDto.setToken(token);
+        signInResponseDto.setToken(userToken.getToken());
+        signInResponseDto.setUserId(userToken.getUser().getId());
         signInResponseDto.setResponse(ResponseType.SUCCESS);
         log.debug("SignInResponseDto ({}) is going to be returned for signInRequestDto {}", signInResponseDto, signInRequestDto);
         return signInResponseDto;

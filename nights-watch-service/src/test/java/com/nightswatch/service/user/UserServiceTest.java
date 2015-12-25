@@ -1,6 +1,7 @@
 package com.nightswatch.service.user;
 
 import com.nightswatch.dal.entity.user.User;
+import com.nightswatch.dal.entity.user.UserToken;
 import com.nightswatch.dal.repository.user.UserRepository;
 import com.nightswatch.service.exception.AuthenticationFailedException;
 import com.nightswatch.service.user.impl.UserServiceImpl;
@@ -11,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,11 +35,17 @@ public class UserServiceTest {
 
         final User expectedUser = new User();
 
+        final UserToken expectedUserToken = new UserToken();
+        expectedUserToken.setUser(expectedUser);
+        expectedUserToken.setToken("TEST_TOKEN");
+
         when(userRepository.findByUsernameAndPassword(username, password))
                 .thenReturn(expectedUser);
+        when(userTokenService.createUserToken(anyString(), eq(expectedUser)))
+                .thenReturn(expectedUserToken);
 
-        final String token = userService.signIn(username, password);
-        Assert.assertNotNull(token);
+        final UserToken userToken = userService.signIn(username, password);
+        Assert.assertEquals(expectedUserToken, userToken);
     }
 
     @Test(expected = AuthenticationFailedException.class)

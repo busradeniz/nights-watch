@@ -1,6 +1,8 @@
 package com.nightswatch.web.rest;
 
 
+import com.nightswatch.dal.entity.user.User;
+import com.nightswatch.dal.entity.user.UserToken;
 import com.nightswatch.service.exception.AuthenticationFailedException;
 import com.nightswatch.service.exception.DataNotFoundException;
 import com.nightswatch.service.user.UserService;
@@ -34,9 +36,13 @@ public class SignInRestServiceTest extends AbstractRestServiceTest {
 
     @Test
     public void testAuthenticate() throws Exception {
+        final UserToken userToken = new UserToken();
+        userToken.setToken("TEST_TOKEN");
+        userToken.setUser(new User());
+        userToken.getUser().setId(101L);
 
         when(userService.signIn("test_username", "test_password"))
-                .thenReturn("TEST_TOKEN");
+                .thenReturn(userToken);
 
         mockMvc.perform(
                 post("/signin")
@@ -45,7 +51,8 @@ public class SignInRestServiceTest extends AbstractRestServiceTest {
                         .content("{\"username\":\"test_username\",\"password\":\"test_password\"}"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token", Matchers.is("TEST_TOKEN")));
+                .andExpect(jsonPath("$.token", Matchers.is("TEST_TOKEN")))
+                .andExpect(jsonPath("$.userId", Matchers.is(101)));
 
         verify(userService).signIn("test_username", "test_password");
     }

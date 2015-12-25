@@ -2,6 +2,7 @@ package com.nightswatch.service.user.impl;
 
 import com.nightswatch.dal.entity.user.User;
 import com.nightswatch.dal.entity.user.UserStatusType;
+import com.nightswatch.dal.entity.user.UserToken;
 import com.nightswatch.dal.repository.user.UserRepository;
 import com.nightswatch.service.AbstractService;
 import com.nightswatch.service.MailingService;
@@ -43,7 +44,7 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String signIn(String username, String password) {
+    public UserToken signIn(String username, String password) {
         log.debug("Trying to Authenticate for username ({}) and password({}) ", username, password);
         final User user = this.repository.findByUsernameAndPassword(username, password);
         if (user == null) {
@@ -52,9 +53,9 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
         }
         log.debug("User({}) is found for username ({}) and password({}) ", user, username, password);
         final String token = UUID.randomUUID().toString();
-        userTokenService.createUserToken(token, user);
+        final UserToken userToken = userTokenService.createUserToken(token, user);
         log.debug("Token({}) is created for for username ({}) and password({}) ", token, username, password);
-        return token;
+        return userToken;
     }
 
     @Override

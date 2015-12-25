@@ -23,6 +23,7 @@ public class SignInRestServiceIT extends AbstractIT {
         final SignInResponseDto signInResponseDto = restTemplate.postForObject(this.baseUrl + "/signin", signInRequestDto, SignInResponseDto.class);
         Assert.assertNotNull(signInResponseDto);
         Assert.assertNotNull(signInResponseDto.getToken());
+        Assert.assertNotNull(signInResponseDto.getUserId());
     }
 
     @Test
