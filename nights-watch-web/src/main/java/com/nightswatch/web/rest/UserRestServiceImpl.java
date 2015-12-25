@@ -1,10 +1,14 @@
 package com.nightswatch.web.rest;
 
+import com.nightswatch.api.dto.ResponseType;
+import com.nightswatch.api.dto.user.ChangePasswordRequestDto;
+import com.nightswatch.api.dto.user.ChangePasswordResponseDto;
 import com.nightswatch.api.dto.user.UserDto;
 import com.nightswatch.api.rest.user.UserRestService;
 import com.nightswatch.dal.entity.user.Role;
 import com.nightswatch.dal.entity.user.User;
 import com.nightswatch.service.MediaService;
+import com.nightswatch.service.exception.WrongPasswordException;
 import com.nightswatch.service.user.RoleService;
 import com.nightswatch.service.user.UserService;
 import com.nightswatch.service.user.UserTokenService;
@@ -84,6 +88,22 @@ public class UserRestServiceImpl extends AbstractAuthenticatedRestService implem
         this.userService.save(user);
 
         return UserDtoConversionUtils.convert(user);
+    }
+
+    @RequestMapping(path = "/changePassword", method = RequestMethod.POST)
+    public ChangePasswordResponseDto changePassword(@RequestBody ChangePasswordRequestDto changePasswordRequestDto,
+                                                    @RequestHeader(name = "Authorization", required = false) final String token) {
+        final User user = this.checkAuthorizationToken(token);
+        if (!user.getPassword().equals(changePasswordRequestDto.getOldPassword())) {
+            throw new WrongPasswordException(changePasswordRequestDto.getOldPassword());
+        }
+
+        user.setPassword(changePasswordRequestDto.getNewPassword());
+        this.userService.save(user);
+
+        final ChangePasswordResponseDto changePasswordResponseDto = new ChangePasswordResponseDto();
+        changePasswordResponseDto.setResponse(ResponseType.SUCCESS);
+        return changePasswordResponseDto;
     }
 
 }
