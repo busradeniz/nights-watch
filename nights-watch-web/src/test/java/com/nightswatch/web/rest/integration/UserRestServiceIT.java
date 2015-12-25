@@ -24,7 +24,6 @@ public class UserRestServiceIT extends AbstractIT {
         final RestTemplate secureRestTemplate = this.getSecureTemplate(signInResponseDto.getToken());
         final UserDto userDto = secureRestTemplate.getForObject(this.baseUrl + "/user/1", UserDto.class);
         Assert.assertEquals("test", userDto.getUsername());
-        Assert.assertNull(userDto.getPassword());
         Assert.assertEquals("busradeniz89@gmail.com", userDto.getEmail());
     }
 

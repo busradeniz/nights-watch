@@ -4,8 +4,12 @@ import com.nightswatch.api.dto.user.UserDto;
 import com.nightswatch.api.rest.user.UserRestService;
 import com.nightswatch.dal.entity.user.Role;
 import com.nightswatch.dal.entity.user.User;
+import com.nightswatch.service.MediaService;
+import com.nightswatch.service.user.RoleService;
 import com.nightswatch.service.user.UserService;
 import com.nightswatch.service.user.UserTokenService;
+import com.nightswatch.web.util.EnumDtoConversionUtils;
+import com.nightswatch.web.util.UserDtoConversionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +24,18 @@ import java.util.Collection;
 public class UserRestServiceImpl extends AbstractAuthenticatedRestService implements UserRestService {
 
     private final UserService userService;
+    private final MediaService mediaService;
+    private final RoleService roleService;
 
     @Autowired
-    public UserRestServiceImpl(UserTokenService userTokenService, UserService userService) {
+    public UserRestServiceImpl(final UserTokenService userTokenService,
+                               final UserService userService,
+                               final MediaService mediaService,
+                               final RoleService roleService) {
         super(userTokenService);
         this.userService = userService;
+        this.mediaService = mediaService;
+        this.roleService = roleService;
     }
 
     /**
@@ -37,40 +48,42 @@ public class UserRestServiceImpl extends AbstractAuthenticatedRestService implem
     public UserDto get(@PathVariable Long id, @RequestHeader(name = "Authorization", required = false) final String token) {
         this.checkAuthorizationToken(token);
         final User user = userService.findOne(id);
-        return createUserDtoFromUser(user);
+        return UserDtoConversionUtils.convert(user);
     }
 
     /**
-     * Updates entity information with data from entityDto. id and entityId in the dto must match.
+     * Updates entity information with data from userDto. id and entityId in the dto must match.
      *
-     * @param id        existing unique entity id
-     * @param entityDto entity information will be updated according to this data
+     * @param id      existing unique entity id
+     * @param userDto entity information will be updated according to this data
      * @return updated version of entity as entity dto
      */
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public UserDto update(@PathVariable Long id, @RequestBody UserDto entityDto, @RequestHeader(name = "Authorization", required = false) final String token) {
+    public UserDto update(@PathVariable Long id, @RequestBody UserDto userDto, @RequestHeader(name = "Authorization", required = false) final String token) {
         this.checkAuthorizationToken(token);
 
-        final User dbUser = this.userService.findOne(id);
-        dbUser.setUsername(entityDto.getUsername());
-        dbUser.setPassword(entityDto.getPassword());
-        dbUser.setEmail(entityDto.getEmail());
-        this.userService.save(dbUser);
-
-        return this.createUserDtoFromUser(dbUser);
-    }
-
-    // TODO DTO <--> Entity dönüşümü için servisler yazılacak
-    private UserDto createUserDtoFromUser(User user) {
-        final UserDto createdUserDto = new UserDto();
-        createdUserDto.setUsername(user.getUsername());
-        createdUserDto.setEmail(user.getEmail());
-        final Collection<String> roles = new ArrayList<>();
-        for (Role role : user.getRoles()) {
-            roles.add(role.getRoleName());
+        final User user = this.userService.findOne(id);
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setFullName(userDto.getFullName());
+        user.setGenderType(EnumDtoConversionUtils.convert(userDto.getGenderTypeDto()));
+        user.setBirthday(userDto.getBirthday());
+        user.setBio(userDto.getBio());
+        if (userDto.getPhoto() != null && userDto.getPhoto().getId() != null) {
+            user.setMedia(this.mediaService.findOne(userDto.getId()));
         }
-        createdUserDto.setRoles(roles);
-        return createdUserDto;
+
+        if (userDto.getRoles() != null) {
+            final Collection<Role> roles = new ArrayList<>();
+            for (String roleName : userDto.getRoles()) {
+                roles.add(this.roleService.findByRoleName(roleName));
+            }
+            user.setRoles(roles);
+        }
+
+        this.userService.save(user);
+
+        return UserDtoConversionUtils.convert(user);
     }
 
 }

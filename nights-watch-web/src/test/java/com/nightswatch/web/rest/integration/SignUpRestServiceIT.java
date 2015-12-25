@@ -1,5 +1,6 @@
 package com.nightswatch.web.rest.integration;
 
+import com.nightswatch.api.dto.user.BasicUserDto;
 import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
 import com.nightswatch.api.dto.user.UserDto;
@@ -15,7 +16,7 @@ public class SignUpRestServiceIT extends AbstractIT {
     public void testSignUpAndThenSignIn() throws Exception {
         final RestTemplate restTemplate = super.getRestTemplate();
 
-        final UserDto userRegister = new UserDto();
+        final BasicUserDto userRegister = new BasicUserDto();
         userRegister.setUsername("test_1");
         userRegister.setPassword("test_1");
         userRegister.setEmail("test_1@gmail.com");
@@ -42,7 +43,7 @@ public class SignUpRestServiceIT extends AbstractIT {
     public void testSignUpWithSameUsername() throws Exception {
         final RestTemplate restTemplate = super.getRestTemplate();
 
-        final UserDto userRegister = new UserDto();
+        final BasicUserDto userRegister = new BasicUserDto();
         userRegister.setUsername("test_2");
         userRegister.setPassword("test_2");
         userRegister.setEmail("test_2@gmail.com");

@@ -26,4 +26,9 @@ public class RoleServiceImpl extends AbstractService<Role, RoleRepository> imple
         final Role role = this.repository.findByRoleName("BASIC");
         return Collections.singletonList(role);
     }
+
+    @Override
+    public Role findByRoleName(String roleName) {
+        return repository.findByRoleName(roleName);
+    }
 }

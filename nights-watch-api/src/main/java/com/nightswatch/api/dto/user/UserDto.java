@@ -1,16 +1,22 @@
 package com.nightswatch.api.dto.user;
 
 import com.nightswatch.api.dto.EntityDto;
+import com.nightswatch.api.dto.MediaDto;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class UserDto implements EntityDto {
 
     private Long id;
     private String username;
     private String email;
-    private String password;
+    private String fullName;
+    private Date birthday;
+    private GenderTypeDto genderTypeDto;
+    private String bio;
     private Collection<String> roles;
+    private MediaDto photo;
 
     @Override
     public Long getId() {
@@ -29,20 +35,44 @@ public class UserDto implements EntityDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public GenderTypeDto getGenderTypeDto() {
+        return genderTypeDto;
+    }
+
+    public void setGenderTypeDto(GenderTypeDto genderTypeDto) {
+        this.genderTypeDto = genderTypeDto;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public Collection<String> getRoles() {
@@ -53,13 +83,12 @@ public class UserDto implements EntityDto {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                '}';
+    public MediaDto getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MediaDto photo) {
+        this.photo = photo;
     }
 
     @Override
@@ -69,17 +98,17 @@ public class UserDto implements EntityDto {
 
         UserDto userDto = (UserDto) o;
 
-        if (!username.equals(userDto.username)) return false;
-        if (!email.equals(userDto.email)) return false;
-        return roles.equals(userDto.roles);
+        if (id != null ? !id.equals(userDto.id) : userDto.id != null) return false;
+        if (username != null ? !username.equals(userDto.username) : userDto.username != null) return false;
+        return !(email != null ? !email.equals(userDto.email) : userDto.email != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + roles.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
 }

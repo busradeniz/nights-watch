@@ -8,4 +8,6 @@ import java.util.Collection;
 public interface RoleService extends CrudService<Role> {
 
     Collection<Role> getBasicUserRoles();
+
+    Role findByRoleName(String roleName);
 }
