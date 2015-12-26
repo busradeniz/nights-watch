@@ -160,7 +160,7 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         return ViolationDtoConversionUtils.convert(violation);
     }
 
-    private Comment createHistoryComment(Violation violation, User user) {
+    public Comment createHistoryComment(Violation violation, User user) {
         final Comment comment = new Comment();
         comment.setCommentType(CommentType.HISTORY);
         comment.setViolation(violation);

@@ -1,15 +1,9 @@
 package com.nightswatch.web.util;
 
 import com.nightswatch.api.dto.user.GenderTypeDto;
-import com.nightswatch.api.dto.violation.CommentTypeDto;
-import com.nightswatch.api.dto.violation.DangerLevelTypeDto;
-import com.nightswatch.api.dto.violation.FrequencyLevelTypeDto;
-import com.nightswatch.api.dto.violation.ViolationStatusTypeDto;
+import com.nightswatch.api.dto.violation.*;
 import com.nightswatch.dal.entity.user.GenderType;
-import com.nightswatch.dal.entity.violation.CommentType;
-import com.nightswatch.dal.entity.violation.DangerLevelType;
-import com.nightswatch.dal.entity.violation.FrequencyLevelType;
-import com.nightswatch.dal.entity.violation.ViolationStatusType;
+import com.nightswatch.dal.entity.violation.*;
 
 public final class EnumDtoConversionUtils {
 
@@ -61,5 +55,13 @@ public final class EnumDtoConversionUtils {
 
     public static CommentTypeDto convert(CommentType commentType) {
         return CommentTypeDto.valueOf(commentType.name());
+    }
+
+    public static ConstraintTypeDto convert(ConstraintType constraintType) {
+        return ConstraintTypeDto.valueOf(constraintType.name());
+    }
+
+    public static ConstraintType convert(ConstraintTypeDto constraintTypeDto) {
+        return ConstraintType.valueOf(constraintTypeDto.name());
     }
 }
