@@ -104,7 +104,7 @@ public class ViolationRepositoryTest extends AbstractRepositoryTest {
         assertNotNull(violation);
         assertNotNull(violation.getId());
 
-        final List<Violation> allByOwnerAndViolationStatusType = violationRepository.findAllByOwnerAndViolationStatusType(user, ViolationStatusType.NOT_VIOLATION);
+        final List<Violation> allByOwnerAndViolationStatusType = violationRepository.findAllByOwnerAndViolationStatusType(user, new ViolationStatusType[]{ViolationStatusType.NOT_VIOLATION});
         assertNotNull(allByOwnerAndViolationStatusType);
         assertFalse(allByOwnerAndViolationStatusType.isEmpty());
         assertEquals(violation, allByOwnerAndViolationStatusType.get(0));
@@ -159,7 +159,7 @@ public class ViolationRepositoryTest extends AbstractRepositoryTest {
         userWatch.setViolation(violation);
         userWatchRepository.save(userWatch);
 
-        final List<Violation> allByOwnerAndViolationStatusType = violationRepository.findAllWatchedViolations(user2, ViolationStatusType.NOT_VIOLATION);
+        final List<Violation> allByOwnerAndViolationStatusType = violationRepository.findAllWatchedViolations(user2, new ViolationStatusType[]{ViolationStatusType.NOT_VIOLATION});
         assertNotNull(allByOwnerAndViolationStatusType);
         assertFalse(allByOwnerAndViolationStatusType.isEmpty());
         assertEquals(violation, allByOwnerAndViolationStatusType.get(0));

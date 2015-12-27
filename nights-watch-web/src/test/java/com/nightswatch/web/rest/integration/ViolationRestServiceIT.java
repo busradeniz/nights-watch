@@ -519,7 +519,7 @@ public class ViolationRestServiceIT extends AbstractIT {
         assertNotNull("test", createdUserWatchDto.getUsername());
 
         // 5. Adim: Takip Edilen Violation'larin okunmasi
-        final Collection<ViolationDto> violationDtos = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/top20/watched?violationStatus=NEW", ViolationDtoList.class);
+        final Collection<ViolationDto> violationDtos = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/top20/watched?violationStatus=NEW,NOT_FIXED", ViolationDtoList.class);
         assertNotNull(violationDtos);
         assertFalse(violationDtos.isEmpty());
     }

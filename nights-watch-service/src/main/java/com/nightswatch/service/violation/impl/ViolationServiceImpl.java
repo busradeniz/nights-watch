@@ -29,13 +29,13 @@ public class ViolationServiceImpl extends AbstractService<Violation, ViolationRe
     }
 
     @Override
-    public List<Violation> findAllByOwnerAndViolationStatusType(User owner, ViolationStatusType violationStatusType) {
-        return repository.findAllByOwnerAndViolationStatusType(owner, violationStatusType);
+    public List<Violation> findAllWatchedViolations(User owner, ViolationStatusType[] violationStatusTypes) {
+        return repository.findAllWatchedViolations(owner, violationStatusTypes);
     }
 
     @Override
-    public List<Violation> findAllWatchedViolations(final User owner, ViolationStatusType violationStatusType) {
-        return repository.findAllWatchedViolations(owner, violationStatusType);
+    public List<Violation> findAllByOwnerAndViolationStatusType(User owner, ViolationStatusType[] violationStatusTypes) {
+        return repository.findAllByOwnerAndViolationStatusType(owner, violationStatusTypes);
     }
 
     @Override

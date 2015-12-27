@@ -90,10 +90,10 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     }
 
     @RequestMapping(path = "/top20/owned", method = RequestMethod.GET)
-    public Collection<ViolationDto> getOwnedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto violationStatusTypeDto,
+    public Collection<ViolationDto> getOwnedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto[] violationStatusTypeDtos,
                                                        @RequestHeader(name = "Authorization", required = false) final String token) {
         final User user = this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAllByOwnerAndViolationStatusType(user, EnumDtoConversionUtils.convert(violationStatusTypeDto));
+        final List<Violation> violations = this.violationService.findAllByOwnerAndViolationStatusType(user, EnumDtoConversionUtils.convert(violationStatusTypeDtos));
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));
@@ -102,10 +102,10 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
     }
 
     @RequestMapping(path = "/top20/watched", method = RequestMethod.GET)
-    public Collection<ViolationDto> getWatchedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto violationStatusTypeDto,
+    public Collection<ViolationDto> getWatchedViolations(@RequestParam(value = "violationStatus", required = true) ViolationStatusTypeDto[] violationStatusTypeDtos,
                                                          @RequestHeader(name = "Authorization", required = false) final String token) {
         final User user = this.checkAuthorizationToken(token);
-        final List<Violation> violations = this.violationService.findAllWatchedViolations(user, EnumDtoConversionUtils.convert(violationStatusTypeDto));
+        final List<Violation> violations = this.violationService.findAllWatchedViolations(user, EnumDtoConversionUtils.convert(violationStatusTypeDtos));
         final Collection<ViolationDto> violationDtos = new ArrayList<>();
         for (Violation violation : violations) {
             violationDtos.add(ViolationDtoConversionUtils.convert(violation));

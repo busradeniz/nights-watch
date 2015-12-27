@@ -10,9 +10,9 @@ import java.util.List;
 public interface ViolationService extends CrudService<Violation> {
     List<Violation> findAllNewest();
 
-    List<Violation> findAllByOwnerAndViolationStatusType(User owner, ViolationStatusType violationStatusType);
+    List<Violation> findAllWatchedViolations(User owner, ViolationStatusType[] violationStatusTypes);
 
-    List<Violation> findAllWatchedViolations(User owner, ViolationStatusType violationStatusType);
+    List<Violation> findAllByOwnerAndViolationStatusType(User owner, ViolationStatusType[] violationStatusTypes);
 
     List<Violation> findAllWithMostLikes();
 }

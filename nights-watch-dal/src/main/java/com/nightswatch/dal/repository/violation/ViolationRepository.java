@@ -11,16 +11,22 @@ import java.util.List;
 
 public interface ViolationRepository extends JpaRepository<Violation, Long> {
 
-    List<Violation> findAllByOwnerAndViolationStatusType(final User owner, final ViolationStatusType violationStatusType);
+    @Query("SELECT v " +
+            "FROM Violation v " +
+            "WHERE v.owner = :owner " +
+            "AND (v.violationStatusType IN (:violationStatusTypes) )" +
+            "ORDER BY v.violationDate DESC")
+    List<Violation> findAllByOwnerAndViolationStatusType(@Param("owner") final User owner,
+                                                         @Param("violationStatusTypes") final ViolationStatusType[] violationStatusTypes);
 
     @Query("SELECT v " +
             "FROM Violation v " +
             "JOIN v.userWatches uw " +
             "WHERE uw.user = :owner " +
-            "AND (:violationStatusType IS NULL OR v.violationStatusType = :violationStatusType )" +
+            "AND (v.violationStatusType IN (:violationStatusTypes) )" +
             "ORDER BY v.violationDate DESC")
     List<Violation> findAllWatchedViolations(@Param("owner") final User owner,
-                                             @Param("violationStatusType") final ViolationStatusType violationStatusType);
+                                             @Param("violationStatusTypes") final ViolationStatusType[] violationStatusTypes);
 
     @Query("SELECT v " +
             "FROM Violation v " +

@@ -30,6 +30,19 @@ public final class EnumDtoConversionUtils {
         return ViolationStatusType.valueOf(violationStatusTypeDto.name());
     }
 
+    public static ViolationStatusType[] convert(ViolationStatusTypeDto[] violationStatusTypeDtos) {
+        if (violationStatusTypeDtos == null) {
+            return null;
+        }
+
+        final ViolationStatusType[] violationStatusTypes = new ViolationStatusType[violationStatusTypeDtos.length];
+        for (int i = 0; i < violationStatusTypeDtos.length; i++) {
+            violationStatusTypes[i] = EnumDtoConversionUtils.convert(violationStatusTypeDtos[i]);
+        }
+
+        return violationStatusTypes;
+    }
+
     public static ViolationStatusTypeDto convert(ViolationStatusType violationStatusType) {
         return ViolationStatusTypeDto.valueOf(violationStatusType.name());
     }
