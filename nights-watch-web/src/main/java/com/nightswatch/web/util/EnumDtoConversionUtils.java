@@ -48,6 +48,9 @@ public final class EnumDtoConversionUtils {
     }
 
     public static GenderType convert(GenderTypeDto genderTypeDto) {
+        if(genderTypeDto == null){
+            return null;
+        }
         return GenderType.valueOf(genderTypeDto.name());
     }
 

@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class UserRestServiceIT extends AbstractIT {
 
@@ -30,6 +31,25 @@ public class UserRestServiceIT extends AbstractIT {
 
     @Test
     public void testUpdate() throws Exception {
+        final SignInRequestDto signInRequestDto = new SignInRequestDto();
+        signInRequestDto.setUsername("test");
+        signInRequestDto.setPassword("test");
+
+        final SignInResponseDto signInResponseDto = this.getRestTemplate().postForObject(this.baseUrl + "/signin", signInRequestDto, SignInResponseDto.class);
+        assertNotNull(signInResponseDto);
+        assertNotNull(signInResponseDto.getToken());
+
+        final UserDto userDto = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/user/" + signInResponseDto.getUserId(), UserDto.class);
+        assertNotNull(userDto);
+        assertNull(userDto.getBio());
+        userDto.setBio("Test Bio");
+
+        this.getSecureTemplate(signInResponseDto.getToken()).put(this.baseUrl + "/user/" + signInResponseDto.getUserId(), userDto);
+
+        final UserDto updatedUserDto = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/user/" + signInResponseDto.getUserId(), UserDto.class);
+        assertNotNull(updatedUserDto);
+        assertEquals("Test Bio", userDto.getBio());
+
 
     }
 
