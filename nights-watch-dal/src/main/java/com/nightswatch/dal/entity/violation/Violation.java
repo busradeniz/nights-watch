@@ -80,6 +80,8 @@ public class Violation extends AbstractEntity {
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violation")
     private Collection<Comment> comments;
 
+    private String customProperties;
+
     public String getTitle() {
         return title;
     }
@@ -222,5 +224,13 @@ public class Violation extends AbstractEntity {
 
     public void setComments(Collection<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getCustomProperties() {
+        return customProperties;
+    }
+
+    public void setCustomProperties(String customProperties) {
+        this.customProperties = customProperties;
     }
 }

@@ -30,6 +30,7 @@ public final class ViolationDtoConversionUtils {
         violation.setViolationStatusType(EnumDtoConversionUtils.convert(abstractViolationDto.getViolationStatus()));
         violation.setDangerLevelType(EnumDtoConversionUtils.convert(abstractViolationDto.getDangerLevel()));
         violation.setFrequencyLevelType(EnumDtoConversionUtils.convert(abstractViolationDto.getFrequencyLevel()));
+        violation.setCustomProperties(abstractViolationDto.getCustomProperties());
         return violation;
     }
 
@@ -52,6 +53,7 @@ public final class ViolationDtoConversionUtils {
         violationDto.setCommentCount(violation.getComments() == null ? 0 : violation.getComments().size());
         violationDto.setUserLikeCount(violation.getUserLikes() == null ? 0 : violation.getUserLikes().size());
         violationDto.setUserWatchCount(violation.getUserWatches() == null ? 0 : violation.getUserWatches().size());
+        violationDto.setCustomProperties(violation.getCustomProperties());
         return violationDto;
     }
 }

@@ -17,6 +17,7 @@ public abstract class AbstractViolationDto implements Serializable {
     protected DangerLevelTypeDto dangerLevel;
     protected FrequencyLevelTypeDto frequencyLevel;
     protected String violationGroupName;
+    protected String customProperties;
 
 
     // Default Const.
@@ -34,6 +35,7 @@ public abstract class AbstractViolationDto implements Serializable {
         this.dangerLevel = other.dangerLevel;
         this.frequencyLevel = other.frequencyLevel;
         this.violationGroupName = other.violationGroupName;
+        this.customProperties = other.customProperties;
     }
 
     public String getTitle() {
@@ -106,5 +108,13 @@ public abstract class AbstractViolationDto implements Serializable {
 
     public void setViolationGroupName(String violationGroupName) {
         this.violationGroupName = violationGroupName;
+    }
+
+    public String getCustomProperties() {
+        return customProperties;
+    }
+
+    public void setCustomProperties(String customProperties) {
+        this.customProperties = customProperties;
     }
 }
