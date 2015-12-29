@@ -11,11 +11,11 @@ import java.util.Date;
 @Access(AccessType.FIELD)
 public class UserLike extends AbstractEntity {
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @ManyToOne(targetEntity = Violation.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(targetEntity = Violation.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "VIOLATION_ID")
     private Violation violation;
 
