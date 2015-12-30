@@ -5,6 +5,7 @@ import com.nightswatch.api.dto.EntityDto;
 public class ViolationPropertyDto implements EntityDto {
 
     private Long id;
+    private Long violationGroupId;
     private String property;
     private ConstraintTypeDto constraintTypeDto;
     private String constraintValue;
@@ -17,6 +18,14 @@ public class ViolationPropertyDto implements EntityDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getViolationGroupId() {
+        return violationGroupId;
+    }
+
+    public void setViolationGroupId(Long violationGroupId) {
+        this.violationGroupId = violationGroupId;
     }
 
     public String getProperty() {

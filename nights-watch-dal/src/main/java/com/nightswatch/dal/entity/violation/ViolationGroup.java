@@ -16,6 +16,9 @@ public class ViolationGroup extends AbstractEntity {
     @OneToMany(targetEntity = ViolationProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "violationGroup")
     private Collection<ViolationProperty> violationProperties;
 
+    @OneToMany(targetEntity = Violation.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "violationGroup")
+    private Collection<Violation> violations;
+
     public String getName() {
         return name;
     }
@@ -30,5 +33,13 @@ public class ViolationGroup extends AbstractEntity {
 
     public void setViolationProperties(Collection<ViolationProperty> violationProperties) {
         this.violationProperties = violationProperties;
+    }
+
+    public Collection<Violation> getViolations() {
+        return violations;
+    }
+
+    public void setViolations(Collection<Violation> violations) {
+        this.violations = violations;
     }
 }

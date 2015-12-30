@@ -65,7 +65,7 @@ public class Violation extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "MEDIA_ID")})
     private Collection<Media> medias;
 
-    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "VIOLATION_TAGS",
             joinColumns = {@JoinColumn(name = "VIOLATION_ID")},
             inverseJoinColumns = {@JoinColumn(name = "TAG_ID")})

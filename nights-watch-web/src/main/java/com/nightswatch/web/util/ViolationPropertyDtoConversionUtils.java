@@ -14,6 +14,7 @@ public final class ViolationPropertyDtoConversionUtils {
     public static ViolationPropertyDto convert(ViolationProperty violationProperty) {
         final ViolationPropertyDto violationPropertyDto = new ViolationPropertyDto();
         violationPropertyDto.setId(violationProperty.getId());
+        violationPropertyDto.setViolationGroupId(violationProperty.getViolationGroup().getId());
         violationPropertyDto.setProperty(violationProperty.getProperty());
         violationPropertyDto.setConstraintTypeDto(EnumDtoConversionUtils.convert(violationProperty.getConstraintType()));
         violationPropertyDto.setConstraintValue(violationProperty.getConstraintValue());
@@ -22,7 +23,7 @@ public final class ViolationPropertyDtoConversionUtils {
     }
 
     public static Collection<ViolationPropertyDto> convert(Collection<ViolationProperty> violationProperties) {
-        if(violationProperties == null || violationProperties.isEmpty()){
+        if (violationProperties == null || violationProperties.isEmpty()) {
             return Collections.emptyList();
         }
 

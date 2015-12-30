@@ -1,31 +1,10 @@
 package com.nightswatch.api.dto.violation;
 
-import com.nightswatch.api.dto.EntityDto;
-
 import java.util.Collection;
 
-public class ViolationGroupDto implements EntityDto {
+public class ViolationGroupDto extends SimpleViolationGroupDto {
 
-    private Long id;
-    private String name;
     private Collection<ViolationPropertyDto> violationPropertyDtos;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Collection<ViolationPropertyDto> getViolationPropertyDtos() {
         return violationPropertyDtos;
