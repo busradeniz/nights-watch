@@ -1,7 +1,7 @@
 package com.nightswatch.web.rest;
 
 import com.nightswatch.api.dto.ResponseType;
-import com.nightswatch.api.dto.violation.DeleteUserWatchResponse;
+import com.nightswatch.api.dto.violation.DeleteEntityResponse;
 import com.nightswatch.api.dto.violation.UserWatchDto;
 import com.nightswatch.api.rest.UserWatchRestService;
 import com.nightswatch.dal.entity.user.User;
@@ -41,11 +41,11 @@ public class UserWatchRestServiceImpl extends AbstractAuthenticatedRestService i
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public DeleteUserWatchResponse delete(@PathVariable Long id,
-                       @RequestHeader(name = "Authorization", required = false) String token) {
+    public DeleteEntityResponse delete(@PathVariable Long id,
+                                       @RequestHeader(name = "Authorization", required = false) String token) {
         this.checkAuthorizationToken(token);
         this.userWatchService.delete(id);
-        DeleteUserWatchResponse deleteUserWatchResponse = new DeleteUserWatchResponse();
+        DeleteEntityResponse deleteUserWatchResponse = new DeleteEntityResponse();
         deleteUserWatchResponse.setResponse(ResponseType.SUCCESS);
         deleteUserWatchResponse.setMessage("Delete watch success");
         return deleteUserWatchResponse;

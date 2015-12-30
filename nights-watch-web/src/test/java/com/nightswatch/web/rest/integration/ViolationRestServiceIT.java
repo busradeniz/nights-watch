@@ -6,12 +6,15 @@ import com.nightswatch.api.dto.user.SignInRequestDto;
 import com.nightswatch.api.dto.user.SignInResponseDto;
 import com.nightswatch.api.dto.violation.*;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -522,6 +525,146 @@ public class ViolationRestServiceIT extends AbstractIT {
         final Collection<ViolationDto> violationDtos = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/top20/watched?violationStatus=NEW,NOT_FIXED", ViolationDtoList.class);
         assertNotNull(violationDtos);
         assertFalse(violationDtos.isEmpty());
+    }
+
+    /**
+     * 1. Adim: Authentication
+     * 2. Adim: Violation icin Gerekli Media'larin Yuklenmesi
+     * 3. Adim: Violation'in yaratilmasi
+     * 4. Adim: Comment icin gerekli media'larin yuklenmesi
+     * 5. Adim: Comment Eklenmesi
+     * 6. Adim: Violation'in Like Edilmesi
+     * 7. Adim: Violation'in Watch Edilmesi
+     * 8. Adim: Violation'in Silinmesi
+     */
+    @Test
+    public void testDeleteViolation() throws Exception {
+
+        final RestTemplate restTemplate = this.getRestTemplate();
+
+        // 1. Adim: Authentication
+        final SignInRequestDto signInRequestDto = new SignInRequestDto();
+        signInRequestDto.setUsername("test");
+        signInRequestDto.setPassword("test");
+
+        final SignInResponseDto signInResponseDto = restTemplate.postForObject(this.baseUrl + "/signin", signInRequestDto, SignInResponseDto.class);
+        assertNotNull(signInResponseDto);
+        assertNotNull(signInResponseDto.getToken());
+
+        // 2. Adim: Violation icin Gerekli Media'larin yuklenmesi
+        final RestTemplate secureRestTemplate = this.getSecureTemplate(signInResponseDto.getToken());
+
+        final LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("file", new ClassPathResource("know_nothing.jpg"));
+        map.add("mediaType", "IMAGE");
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        final HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+        final MediaDto mediaDto = secureRestTemplate.postForObject(this.baseUrl + "/media/upload", requestEntity, MediaDto.class);
+        assertNotNull(mediaDto);
+        assertNotNull(mediaDto.getId());
+        assertEquals("know_nothing.jpg", mediaDto.getFileName());
+
+        // Bu admin sonunda violationMediaId'yi aliyoruz, birazdan bu id'yi violation yaratmada kullanacagiz
+        final Long violationMediaId = mediaDto.getId();
+
+
+        // 3. Adim: Violation'in yaratilmasi
+        final CreateViolationRequestDto createViolationRequestDto = new CreateViolationRequestDto();
+        createViolationRequestDto.setTitle("Test Violation");
+        createViolationRequestDto.setDescription("Test Violation for Integration Test");
+        createViolationRequestDto.setLatitude(0d);
+        createViolationRequestDto.setLongitude(0d);
+        createViolationRequestDto.setAddress("Right here!!");
+        createViolationRequestDto.setViolationStatus(ViolationStatusTypeDto.NEW);
+        createViolationRequestDto.setDangerLevel(DangerLevelTypeDto.LOW);
+        createViolationRequestDto.setFrequencyLevel(FrequencyLevelTypeDto.LOW);
+        // Dikkat!! Bu groubun veritabaninda olmasi gerekiyor. Ekranlar gelistirilirken
+        // Combobox benzeri bir yapidan secilmeli. Combobox icerisi ViolationGroupRestService
+        // icerisinden doldurulmali.
+        createViolationRequestDto.setViolationGroupName("Test Violation Group");
+        // Yine tagler TagRestService icerisinden secilmeli. Olmayan tagler otomatik olarak
+        // yaratilacak. Tum tagler lower-cased olarak yaratilacak.
+        createViolationRequestDto.setTags(Arrays.asList("tag1", "tag2"));
+        // Az once yarattigimiz media'yi kullaniyoruz.
+        createViolationRequestDto.setMedias(Collections.singleton(violationMediaId));
+
+        final ViolationDto createdViolationDto = this.getSecureTemplate(signInResponseDto.getToken()).postForObject(this.baseUrl + "/violation", createViolationRequestDto, ViolationDto.class);
+        assertNotNull(createdViolationDto);
+        assertThat(createdViolationDto.getMedias(), Matchers.contains(mediaDto));
+        assertThat(createdViolationDto.getTags(), Matchers.contains("tag1", "tag2"));
+        assertEquals("Test Violation Group", createdViolationDto.getViolationGroupName());
+        // Authentication token'imiza iliskin kullanici otomatik olarak owner oluyor.
+        // Authentication token'imizi bu kullaniciyi kullanarak aldik.
+        assertEquals("test", createdViolationDto.getOwner());
+
+        // 4. Adim: Comment icin Media'larin yaratilmasi
+        final LinkedMultiValueMap<String, Object> parameterMap = new LinkedMultiValueMap<>();
+        parameterMap.add("file", new ClassPathResource("know_nothing_2.jpg"));
+        parameterMap.add("mediaType", "IMAGE");
+        final HttpHeaders newMediaHeaders = new HttpHeaders();
+        newMediaHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        final HttpEntity<LinkedMultiValueMap<String, Object>> newRequestEntity = new HttpEntity<>(parameterMap, newMediaHeaders);
+        final MediaDto newMediaDto = this.getSecureTemplate(signInResponseDto.getToken()).postForObject(this.baseUrl + "/media/upload", newRequestEntity, MediaDto.class);
+        assertNotNull(newMediaDto);
+        assertNotNull(newMediaDto.getId());
+        assertEquals("know_nothing_2.jpg", newMediaDto.getFileName());
+
+        // Bu admin sonunda commentMediaId'yi aliyoruz, birazdan bu id'yi violation yaratmada kullanacagiz
+        final Long commentMediaId = newMediaDto.getId();
+
+        // 5. Adim: Comment'in yaratilmasi
+        final CreateCommentDto createCommentDto = new CreateCommentDto();
+        createCommentDto.setViolationId(createdViolationDto.getId());
+        createCommentDto.setMediaIds(Collections.singletonList(commentMediaId));
+        createCommentDto.setContent("TEST_COMMENT");
+
+        final CommentDto createdCommentDto = this.getSecureTemplate(signInResponseDto.getToken()).postForObject(this.baseUrl + "/comment", createCommentDto, CommentDto.class);
+        assertNotNull(createdCommentDto);
+        assertNotNull(createdCommentDto.getId());
+        assertEquals("TEST_COMMENT", createdCommentDto.getContent());
+        assertEquals("test", createdCommentDto.getUsername());
+
+        final CommentDto commentDto = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/comment/" + createdCommentDto.getId(), CommentDto.class);
+        assertNotNull(commentDto);
+        assertEquals(createdCommentDto, commentDto);
+
+        // 6. Adim: Violation'in Like Edilmesi
+        final UserLikeDto userLikeDto = new UserLikeDto();
+        userLikeDto.setViolationId(createdViolationDto.getId());
+        final UserLikeDto createdUserLikeDto = this.getSecureTemplate(signInResponseDto.getToken()).postForObject(this.baseUrl + "/userLike", userLikeDto, UserLikeDto.class);
+        assertNotNull(createdUserLikeDto);
+        assertNotNull(createdUserLikeDto.getId());
+        assertNotNull("test", createdUserLikeDto.getUsername());
+
+
+        // 7. Adim: Violation'in Watch Edilmesi
+        final UserWatchDto userWatchDto = new UserWatchDto();
+        userWatchDto.setViolationId(createdViolationDto.getId());
+        final UserWatchDto createdUserWatchDto = this.getSecureTemplate(signInResponseDto.getToken()).postForObject(this.baseUrl + "/userWatch", userWatchDto, UserWatchDto.class);
+        assertNotNull(createdUserWatchDto);
+        assertNotNull(createdUserWatchDto.getId());
+        assertNotNull("test", createdUserWatchDto.getUsername());
+
+        final ViolationDto actualViolationDto = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/" + createdViolationDto.getId(), ViolationDto.class);
+        assertNotNull(actualViolationDto);
+        assertEquals(new Integer(1), actualViolationDto.getCommentCount());
+        assertEquals(new Integer(1), actualViolationDto.getUserLikeCount());
+        assertEquals(new Integer(1), actualViolationDto.getUserWatchCount());
+
+        // 8. Adim: Violation'in Silinmesi
+        this.getSecureTemplate(signInResponseDto.getToken()).delete(this.baseUrl + "/violation/" + createdViolationDto.getId());
+
+        try {
+            final ViolationDto afterDeleteViolationDto = this.getSecureTemplate(signInResponseDto.getToken()).getForObject(this.baseUrl + "/violation/" + createdViolationDto.getId(), ViolationDto.class);
+            Assert.fail("Violation is deleted. It should not be found!");
+        } catch (HttpClientErrorException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());
+        }
+
+
     }
 
     static class ViolationDtoList implements Collection<ViolationDto> {

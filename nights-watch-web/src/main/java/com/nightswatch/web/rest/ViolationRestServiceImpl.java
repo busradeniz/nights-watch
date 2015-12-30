@@ -1,6 +1,7 @@
 package com.nightswatch.web.rest;
 
 import com.nightswatch.api.dto.MediaDto;
+import com.nightswatch.api.dto.ResponseType;
 import com.nightswatch.api.dto.TagDto;
 import com.nightswatch.api.dto.violation.*;
 import com.nightswatch.api.rest.ViolationRestService;
@@ -119,6 +120,18 @@ public class ViolationRestServiceImpl extends AbstractAuthenticatedRestService i
         this.checkAuthorizationToken(token);
         final Violation violation = violationService.findOne(id);
         return ViolationDtoConversionUtils.convert(violation);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public DeleteEntityResponse delete(@PathVariable Long id,
+                                       @RequestHeader(name = "Authorization", required = false) final String token) {
+        this.checkAuthorizationToken(token);
+        violationService.delete(id);
+
+        final DeleteEntityResponse deleteEntityResponse = new DeleteEntityResponse();
+        deleteEntityResponse.setResponse(ResponseType.SUCCESS);
+        deleteEntityResponse.setMessage("Violation deleted!");
+        return deleteEntityResponse;
     }
 
     @RequestMapping(method = RequestMethod.POST)
