@@ -1,5 +1,7 @@
 package com.nightswatch.web.rest;
 
+import com.nightswatch.api.dto.ResponseType;
+import com.nightswatch.api.dto.violation.DeleteUserLikeResponse;
 import com.nightswatch.api.dto.violation.UserLikeDto;
 import com.nightswatch.api.rest.UserLikeRestService;
 import com.nightswatch.dal.entity.user.User;
@@ -42,9 +44,14 @@ public class UserLikeRestServiceImpl extends AbstractAuthenticatedRestService im
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id,
+    public DeleteUserLikeResponse delete(@PathVariable Long id,
                        @RequestHeader(name = "Authorization", required = false) String token) {
+
         this.checkAuthorizationToken(token);
         this.userLikeService.delete(id);
+        DeleteUserLikeResponse deleteUserLikeResponse = new DeleteUserLikeResponse();
+        deleteUserLikeResponse.setMessage("Delete like success");
+        deleteUserLikeResponse.setResponse(ResponseType.SUCCESS);
+        return deleteUserLikeResponse;
     }
 }
