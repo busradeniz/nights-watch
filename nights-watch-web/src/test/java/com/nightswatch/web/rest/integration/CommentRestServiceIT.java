@@ -14,9 +14,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -198,11 +195,6 @@ public class CommentRestServiceIT extends AbstractIT {
         }
 
         @Override
-        public boolean removeIf(Predicate<? super CommentDto> filter) {
-            return commentDtos.removeIf(filter);
-        }
-
-        @Override
         public boolean retainAll(Collection<?> c) {
             return commentDtos.retainAll(c);
         }
@@ -222,24 +214,5 @@ public class CommentRestServiceIT extends AbstractIT {
             return commentDtos.hashCode();
         }
 
-        @Override
-        public Spliterator<CommentDto> spliterator() {
-            return commentDtos.spliterator();
-        }
-
-        @Override
-        public Stream<CommentDto> stream() {
-            return commentDtos.stream();
-        }
-
-        @Override
-        public Stream<CommentDto> parallelStream() {
-            return commentDtos.parallelStream();
-        }
-
-        @Override
-        public void forEach(Consumer<? super CommentDto> action) {
-            commentDtos.forEach(action);
-        }
     }
 }

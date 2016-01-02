@@ -18,8 +18,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -731,11 +729,6 @@ public class ViolationRestServiceIT extends AbstractIT {
         }
 
         @Override
-        public boolean removeIf(Predicate<? super ViolationDto> filter) {
-            return violationDtos.removeIf(filter);
-        }
-
-        @Override
         public boolean retainAll(Collection<?> c) {
             return violationDtos.retainAll(c);
         }
@@ -753,21 +746,6 @@ public class ViolationRestServiceIT extends AbstractIT {
         @Override
         public int hashCode() {
             return violationDtos.hashCode();
-        }
-
-        @Override
-        public Spliterator<ViolationDto> spliterator() {
-            return violationDtos.spliterator();
-        }
-
-        @Override
-        public Stream<ViolationDto> stream() {
-            return violationDtos.stream();
-        }
-
-        @Override
-        public Stream<ViolationDto> parallelStream() {
-            return violationDtos.parallelStream();
         }
     }
 }

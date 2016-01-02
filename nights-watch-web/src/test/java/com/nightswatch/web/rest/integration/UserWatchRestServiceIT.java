@@ -14,9 +14,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -345,11 +342,6 @@ public class UserWatchRestServiceIT extends AbstractIT {
         }
 
         @Override
-        public boolean removeIf(Predicate<? super UserWatchDto> filter) {
-            return userWatchDtos.removeIf(filter);
-        }
-
-        @Override
         public boolean retainAll(Collection<?> c) {
             return userWatchDtos.retainAll(c);
         }
@@ -369,24 +361,5 @@ public class UserWatchRestServiceIT extends AbstractIT {
             return userWatchDtos.hashCode();
         }
 
-        @Override
-        public Spliterator<UserWatchDto> spliterator() {
-            return userWatchDtos.spliterator();
-        }
-
-        @Override
-        public Stream<UserWatchDto> stream() {
-            return userWatchDtos.stream();
-        }
-
-        @Override
-        public Stream<UserWatchDto> parallelStream() {
-            return userWatchDtos.parallelStream();
-        }
-
-        @Override
-        public void forEach(Consumer<? super UserWatchDto> action) {
-            userWatchDtos.forEach(action);
-        }
     }
 }

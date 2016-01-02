@@ -16,9 +16,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -371,11 +368,6 @@ public class UserLikeRestServiceIT extends AbstractIT {
         }
 
         @Override
-        public boolean removeIf(Predicate<? super UserLikeDto> filter) {
-            return userLikeDtos.removeIf(filter);
-        }
-
-        @Override
         public boolean retainAll(Collection<?> c) {
             return userLikeDtos.retainAll(c);
         }
@@ -395,24 +387,5 @@ public class UserLikeRestServiceIT extends AbstractIT {
             return userLikeDtos.hashCode();
         }
 
-        @Override
-        public Spliterator<UserLikeDto> spliterator() {
-            return userLikeDtos.spliterator();
-        }
-
-        @Override
-        public Stream<UserLikeDto> stream() {
-            return userLikeDtos.stream();
-        }
-
-        @Override
-        public Stream<UserLikeDto> parallelStream() {
-            return userLikeDtos.parallelStream();
-        }
-
-        @Override
-        public void forEach(Consumer<? super UserLikeDto> action) {
-            userLikeDtos.forEach(action);
-        }
     }
 }
