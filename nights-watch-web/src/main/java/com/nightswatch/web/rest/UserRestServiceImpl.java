@@ -74,7 +74,7 @@ public class UserRestServiceImpl extends AbstractAuthenticatedRestService implem
         user.setBirthday(userDto.getBirthday());
         user.setBio(userDto.getBio());
         if (userDto.getPhoto() != null && userDto.getPhoto().getId() != null) {
-            user.setMedia(this.mediaService.findOne(userDto.getId()));
+            user.setMedia(this.mediaService.findOne(userDto.getPhoto().getId()));
         }
 
         if (userDto.getRoles() != null) {
