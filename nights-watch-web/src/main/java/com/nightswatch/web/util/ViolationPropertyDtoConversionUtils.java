@@ -33,4 +33,13 @@ public final class ViolationPropertyDtoConversionUtils {
         }
         return violationPropertyDtos;
     }
+
+    public static ViolationProperty convert(final ViolationPropertyDto violationPropertyDto) {
+        final ViolationProperty violationProperty = new ViolationProperty();
+        violationProperty.setProperty(violationProperty.getProperty());
+        violationProperty.setConstraintType(EnumDtoConversionUtils.convert(violationPropertyDto.getConstraintTypeDto()));
+        violationProperty.setConstraintValue(violationProperty.getConstraintValue());
+        violationProperty.setDescription(violationProperty.getDescription());
+        return violationProperty;
+    }
 }
