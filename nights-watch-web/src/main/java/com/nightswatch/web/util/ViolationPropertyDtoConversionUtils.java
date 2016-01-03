@@ -36,10 +36,10 @@ public final class ViolationPropertyDtoConversionUtils {
 
     public static ViolationProperty convert(final ViolationPropertyDto violationPropertyDto) {
         final ViolationProperty violationProperty = new ViolationProperty();
-        violationProperty.setProperty(violationProperty.getProperty());
+        violationProperty.setProperty(violationPropertyDto.getProperty());
         violationProperty.setConstraintType(EnumDtoConversionUtils.convert(violationPropertyDto.getConstraintTypeDto()));
-        violationProperty.setConstraintValue(violationProperty.getConstraintValue());
-        violationProperty.setDescription(violationProperty.getDescription());
+        violationProperty.setConstraintValue(violationPropertyDto.getConstraintValue());
+        violationProperty.setDescription(violationPropertyDto.getDescription());
         return violationProperty;
     }
 }

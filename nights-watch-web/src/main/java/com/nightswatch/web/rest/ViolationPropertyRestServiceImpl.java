@@ -66,10 +66,10 @@ public class ViolationPropertyRestServiceImpl extends AbstractAuthenticatedRestS
                                        @RequestHeader(name = "Authorization", required = false) final String token) {
         this.checkAuthorizationToken(token);
         ViolationProperty violationProperty = violationPropertyService.findOne(id);
-        violationProperty.setProperty(violationProperty.getProperty());
+        violationProperty.setProperty(violationPropertyDto.getProperty());
         violationProperty.setConstraintType(EnumDtoConversionUtils.convert(violationPropertyDto.getConstraintTypeDto()));
-        violationProperty.setConstraintValue(violationProperty.getConstraintValue());
-        violationProperty.setDescription(violationProperty.getDescription());
+        violationProperty.setConstraintValue(violationPropertyDto.getConstraintValue());
+        violationProperty.setDescription(violationPropertyDto.getDescription());
         violationProperty.setViolationGroup(violationGroupService.findOne(violationPropertyDto.getViolationGroupId()));
         violationProperty = this.violationPropertyService.save(violationProperty);
         return ViolationPropertyDtoConversionUtils.convert(violationProperty);
